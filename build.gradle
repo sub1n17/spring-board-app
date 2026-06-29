@@ -8,6 +8,13 @@ group = 'kr.co.sboard'
 version = '0.0.1-SNAPSHOT'
 description = 'spring-board-app'
 
+// Gradle version값을 SpringBoot application.properties 파일에서 참조하기 위한 Gradle 스크립트 코드
+processResources {
+    filesMatching('**/application.properties') {
+        expand(project.properties)
+    }
+}
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
