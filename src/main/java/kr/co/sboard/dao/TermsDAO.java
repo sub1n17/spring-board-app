@@ -8,7 +8,6 @@ import java.util.List;
 
 @Mapper
 public interface TermsDAO {
-
     public void insert(TermsDTO dto);
     public TermsDTO select(int no);
     public List<TermsDTO> selectAll();

@@ -2,6 +2,7 @@ package kr.co.sboard.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import kr.co.sboard.dto.UserDTO;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -9,11 +10,12 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Getter
-@Entity
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Entity
+@Table(name = "user")
 public class User {
 
     @Id
@@ -33,7 +35,6 @@ public class User {
     private LocalDateTime regDate;
 
     private LocalDateTime leaveDate;
-   
 
     public UserDTO toDTO(){
         return UserDTO.builder()
@@ -52,4 +53,5 @@ public class User {
                 .leaveDate(leaveDate.toString())
                 .build();
     }
+
 }

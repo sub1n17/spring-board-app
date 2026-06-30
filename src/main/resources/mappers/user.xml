@@ -4,14 +4,25 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.sboard.dao.UserDAO">
 
-    <!-- id 값은 DAO의 메서드명으로 맞추기 -->
-    <select id="select" >
+    <select id="select">
     </select>
 
     <select id="selectAll">
     </select>
 
     <insert id="insert">
+        INSERT INTO user SET
+        userid=#{userid},
+        pass=#{pass},
+        name=#{name},
+        nick=#{nick},
+        email=#{email},
+        hp=#{hp},
+        zip=#{zip},
+        addr1=#{addr1},
+        addr2=#{addr2},
+        regip=#{regip},
+        regDate=NOW();
     </insert>
 
     <update id="update">
@@ -19,5 +30,4 @@
 
     <delete id="delete">
     </delete>
-
 </mapper>
