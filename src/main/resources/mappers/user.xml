@@ -12,17 +12,17 @@
 
     <insert id="insert">
         INSERT INTO user SET
-        userid=#{userid},
-        pass=#{pass},
-        name=#{name},
-        nick=#{nick},
-        email=#{email},
-        hp=#{hp},
-        zip=#{zip},
-        addr1=#{addr1},
-        addr2=#{addr2},
-        regip=#{regip},
-        regDate=NOW();
+                            userid=#{userid},
+                            pass=#{pass},
+                            name=#{name},
+                            nick=#{nick},
+                            email=#{email},
+                            hp=#{hp},
+                            zip=#{zip},
+                            addr1=#{addr1},
+                            addr2=#{addr2},
+                            regip=#{regip},
+                            regDate=NOW();
     </insert>
 
     <update id="update">

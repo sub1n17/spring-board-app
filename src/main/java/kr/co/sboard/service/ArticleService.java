@@ -9,32 +9,29 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@RequiredArgsConstructor
 @Log4j2
+@RequiredArgsConstructor
 @Service
 public class ArticleService {
+
     private final ArticleDAO dao;
     private final ArticleRepository repository;
 
-    public ArticleDTO get(int ano) {
+    public ArticleDTO get(int ano){
+        return null;
+    }
+    public List<ArticleDTO> getAll(){
         return null;
     }
 
-    public List<ArticleDTO> getAll() {
-        return null;
-
+    public void register(ArticleDTO dto){
+        dao.insert(dto);
     }
 
-    public void register(ArticleDTO dto) {
+    public void modify(ArticleDTO dto){
 
     }
-
-    public void modify(ArticleDTO dto) {
-
-    }
-
-    public void remove(int ano) {
+    public void remove(int ano){
 
     }
-
 }

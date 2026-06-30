@@ -24,7 +24,6 @@ public class UserDTO {
     private String regip;
     private String regDate;
     private String leaveDate;
-   
 
     public User toEntity(){
         return User.builder()
@@ -41,4 +40,5 @@ public class UserDTO {
                 .regip(regip)
                 .build();
     }
+
 }

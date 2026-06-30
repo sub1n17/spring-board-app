@@ -38,14 +38,14 @@ public class UserService {
         // JPA
         if(dto.getType().equals("userid")){
             count = repository.countByUserid(dto.getValue());
+
         }else if(dto.getType().equals("nick")){
             count = repository.countByNick(dto.getValue());
+
         }else if(dto.getType().equals("email")){
+
             count = repository.countByEmail(dto.getValue());
 
-            if(count == 0){
-                // 인증코드 이메일 전송
-            }
         }else if(dto.getType().equals("hp")){
             count = repository.countByHp(dto.getValue());
         }
@@ -58,10 +58,10 @@ public class UserService {
         dto.setPass(encoded);
 
         // Mybatis
-        //dao.insert(dto);
+        dao.insert(dto);
 
         // JPA
-        repository.save(dto.toEntity());
+        //repository.save(dto.toEntity());
     }
 
     public void modify(UserDTO dto){
