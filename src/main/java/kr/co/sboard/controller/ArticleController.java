@@ -3,6 +3,8 @@ package kr.co.sboard.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import kr.co.sboard.dto.ArticleDTO;
 import kr.co.sboard.dto.FileDTO;
+import kr.co.sboard.dto.PageRequestDTO;
+import kr.co.sboard.dto.PageResponseDTO;
 import kr.co.sboard.service.ArticleService;
 import kr.co.sboard.service.FileService;
 import lombok.RequiredArgsConstructor;
@@ -25,53 +27,41 @@ public class ArticleController {
     private final FileService fileService;
 
     @GetMapping("/article/list")
-    public String list(Model model, @RequestParam(defaultValue = "1") int page) {
-        log.info(page);
-        // 전체 글 갯수
-        int total = articleService.getTotal();
-        int start = articleService.getStart(page);
-        int lastPageNum = articleService.getLastPageNum(total);
-
-        int pageGroupStart = articleService.getPageGroupStart(page);
-        int pageGroupEnd = articleService.getPageGroupEnd(page, lastPageNum);
+    public String list(Model model, PageRequestDTO pageRequestDTO){
+        log.info(pageRequestDTO);
 
         // 목록 데이터 가져오기
-        List<ArticleDTO> dtoList = articleService.getAll(start);
-        //List<ArticleDTO> dtoList = articleService.findAll();
+        PageResponseDTO pageResponseDTO = articleService.getAll(pageRequestDTO);
+        //PageResponseDTO pageResponseDTO = articleService.findAll(pageRequestDTO);
 
         // 모델 참조
-        model.addAttribute("dtoList", dtoList);
-        model.addAttribute("lastPageNum", lastPageNum);
-        model.addAttribute("total", total);
-        model.addAttribute("page", page);
-        model.addAttribute("pageGroupStart", pageGroupStart);
-        model.addAttribute("pageGroupEnd", pageGroupEnd);
+        model.addAttribute(pageResponseDTO);
 
         return "/article/list";
     }
 
     @GetMapping("/article/modify")
-    public String modify() {
+    public String modify(){
         return "/article/modify";
     }
 
     @GetMapping("/article/search")
-    public String search() {
+    public String search(){
         return "/article/search";
     }
 
     @GetMapping("/article/view")
-    public String view() {
+    public String view(){
         return "/article/view";
     }
 
     @GetMapping("/article/write")
-    public String write() {
+    public String write(){
         return "/article/write";
     }
 
     @PostMapping("/article/write")
-    public String write(ArticleDTO articleDTO, HttpServletRequest req) {
+    public String write(ArticleDTO articleDTO, HttpServletRequest req){
         log.info(articleDTO);
 
         String regip = req.getRemoteAddr();

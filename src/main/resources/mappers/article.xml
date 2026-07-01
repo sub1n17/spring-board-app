@@ -14,7 +14,7 @@
         FROM article a
         JOIN user u ON a.writer = u.userid
         ORDER BY a.ano DESC
-        LIMIT #{start}, 10;
+        LIMIT #{pageRequestDTO.start}, 10;
     </select>
 
     <select id="selectCountAll">
@@ -23,13 +23,13 @@
 
     <insert id="insert">
         INSERT INTO article SET
-                                type='free',
-                                title=#{title},
-                                content=#{content},
-                                file=#{file},
-                                writer=#{writer},
-                                regip=#{regip},
-                                wdate=NOW();
+        type='free',
+        title=#{title},
+        content=#{content},
+        file=#{file},
+        writer=#{writer},
+        regip=#{regip},
+        wdate=NOW();
     </insert>
 
     <update id="update">
