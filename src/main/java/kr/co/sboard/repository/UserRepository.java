@@ -11,4 +11,6 @@ public interface UserRepository extends JpaRepository<User, String> {
     int countByNick(String nick);
     int countByEmail(String email);
     int countByHp(String hp);
+
+    // Spring Data JPA가 메서드 이름을 분석해서 SQL을 자동 생성
 }
