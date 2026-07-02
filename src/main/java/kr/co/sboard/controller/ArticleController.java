@@ -31,8 +31,12 @@ public class ArticleController {
         log.info(pageRequestDTO);
 
         // 목록 데이터 가져오기
-        PageResponseDTO pageResponseDTO = articleService.getAll(pageRequestDTO);
-        //PageResponseDTO pageResponseDTO = articleService.findAll(pageRequestDTO);
+
+        // Mybatis
+        //PageResponseDTO pageResponseDTO = articleService.getAll(pageRequestDTO);
+
+        // JPA
+        PageResponseDTO pageResponseDTO = articleService.findAll(pageRequestDTO);
 
         // 모델 참조
         model.addAttribute(pageResponseDTO);
@@ -46,12 +50,31 @@ public class ArticleController {
     }
 
     @GetMapping("/article/search")
-    public String search(){
+    public String search(PageRequestDTO pageRequestDTO, Model model){
+        log.info(pageRequestDTO);
+
+        // 서비스 호출
+        PageResponseDTO pageResponseDTO = articleService.getAll(pageRequestDTO);
+        // 모델참조
+        model.addAttribute(pageResponseDTO);
+
         return "/article/search";
     }
 
     @GetMapping("/article/view")
-    public String view(){
+    public String view(int ano, Model model){
+        log.info(ano);
+
+        // 서비스 호출
+        //ArticleDTO articleDTO = articleService.get(ano);  // Mybatis
+        ArticleDTO articleDTO = articleService.find(ano);   // JPA
+        log.info(articleDTO);
+
+        // 조회수 업데이트 서비스 호출
+        articleService.modifyHit(ano);
+
+        model.addAttribute(articleDTO);
+
         return "/article/view";
     }
 
@@ -61,7 +84,7 @@ public class ArticleController {
     }
 
     @PostMapping("/article/write")
-    public String write(ArticleDTO articleDTO, HttpServletRequest req){
+    public String write(ArticleDTO articleDTO, HttpServletRequest req) {
         log.info(articleDTO);
 
         String regip = req.getRemoteAddr();
@@ -74,7 +97,11 @@ public class ArticleController {
         articleDTO.setFile(fileList.size());
 
         // 글등록
-        articleService.register(articleDTO);
+        int ano = articleService.register(articleDTO);
+        log.info("ano = {}", ano);
+
+        // 파일 등록
+        fileService.register(fileList, ano);
 
         return "redirect:/article/list";
     }

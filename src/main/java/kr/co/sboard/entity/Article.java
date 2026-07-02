@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.awt.image.WritableRaster;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @ToString
@@ -37,6 +38,10 @@ public class Article {
     private LocalDateTime wdate;
 
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "ano")
+    private List<File> fileList;
+
+
     public ArticleDTO toDTO(){
         return ArticleDTO.builder()
                 .ano(ano)
@@ -47,6 +52,7 @@ public class Article {
                 .file(file)
                 .hit(hit)
                 .nick(user.getNick())
+                .writer(user.getUserid())
                 .regip(regip)
                 .wdate(wdate.toString())
                 .build();

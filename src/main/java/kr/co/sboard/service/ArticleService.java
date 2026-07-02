@@ -2,9 +2,11 @@ package kr.co.sboard.service;
 
 import kr.co.sboard.dao.ArticleDAO;
 import kr.co.sboard.dto.ArticleDTO;
+import kr.co.sboard.dto.FileDTO;
 import kr.co.sboard.dto.PageRequestDTO;
 import kr.co.sboard.dto.PageResponseDTO;
 import kr.co.sboard.entity.Article;
+import kr.co.sboard.entity.File;
 import kr.co.sboard.entity.User;
 import kr.co.sboard.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Log4j2
 @RequiredArgsConstructor
@@ -24,49 +27,40 @@ public class ArticleService {
     private final ArticleRepository repository;
 
     public ArticleDTO get(int ano){
+        // Mybatis
+        ArticleDTO articleDTO = dao.select(ano);
+
+        return articleDTO;
+    }
+
+    public ArticleDTO find(int ano){
+        // JPA
+        Optional<Article> optArticle = repository.findById(ano);
+
+        if(optArticle.isPresent()){
+            Article entity = optArticle.get();
+
+            List<File> entityFileList = entity.getFileList();
+
+            List<FileDTO> dtoFileList = entityFileList.stream()
+                    .map(fileEntity -> fileEntity.toDTO())
+                    .toList();
+
+            ArticleDTO articleDTO = entity.toDTO();
+            articleDTO.setFileList(dtoFileList);
+
+            log.info(articleDTO);
+            return articleDTO;
+        }
         return null;
     }
 
-    public int getLastPageNum(int total) {
-        // 마지막 페이지 번호
-        int lastPageNum = 0;
-
-        if(total % 10 == 0){
-            lastPageNum = total / 10;
-        }else {
-            lastPageNum = total / 10 + 1;
-        }
-
-        return lastPageNum;
-    }
-
-    public int getStart(int page){
-        // 목록 LIMIT 시작값
-        int start = (page - 1) * 10;
-        return start;
-    }
-
-    public int getPageGroupStart(int page){
-        return ((page - 1) / 10) * 10 + 1;
-    }
-
-    public int getPageGroupEnd(int page, int lastPageNum){
-        int end = getPageGroupStart(page) + 9;
-        if(end > lastPageNum){
-            end = lastPageNum;
-        }
-        return end;
-    }
-
-    public int getTotal(){
-        return dao.selectCountAll();
-    }
 
     public PageResponseDTO getAll(PageRequestDTO pageRequestDTO){
         // Mybatis
         List<ArticleDTO> dtoList = dao.selectAll(pageRequestDTO);
 
-        int total = dao.selectCountAll();
+        int total = dao.selectCountAll(pageRequestDTO);
 
         return PageResponseDTO.builder()
                 .pageRequestDTO(pageRequestDTO)
@@ -106,13 +100,21 @@ public class ArticleService {
                 .build();
     }
 
-    public void register(ArticleDTO dto){
+    public int register(ArticleDTO dto){
         dao.insert(dto);
+
+        // 매퍼 dao에 인자로 전달되는 dto의 속성 ano에 pk값 초기화
+        return dto.getAno();
     }
 
     public void modify(ArticleDTO dto){
 
     }
+
+    public void modifyHit(int ano){
+        dao.updateHit(ano);
+    }
+
     public void remove(int ano){
 
     }

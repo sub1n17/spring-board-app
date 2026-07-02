@@ -2,6 +2,7 @@ package kr.co.sboard.dto;
 
 import kr.co.sboard.entity.File;
 import lombok.*;
+import org.springframework.core.io.Resource;
 
 @Getter
 @Setter
@@ -16,8 +17,12 @@ public class FileDTO {
     private String ofname;
     private String sfname;
     private int download;
+
     private String rdate;
 
+    // 추가필드
+    private String contentType;
+    private Resource resource;
 
     public File toEntity(){
         return File.builder()
@@ -28,4 +33,5 @@ public class FileDTO {
                 .download(download)
                 .build();
     }
+
 }

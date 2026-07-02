@@ -9,12 +9,13 @@ import java.util.List;
 
 @Mapper
 public interface ArticleDAO {
-    public void insert(ArticleDTO dto);
+    public int insert(ArticleDTO dto);
     public ArticleDTO select(int ano);
     public List<ArticleDTO> selectAll(@Param("pageRequestDTO") PageRequestDTO pageRequestDTO);
 
-    public int selectCountAll();
+    public int selectCountAll(@Param("pageRequestDTO") PageRequestDTO pageRequestDTO);
 
     public void update(ArticleDTO dto);
+    public void updateHit(int ano);
     public void delete(int ano);
 }
